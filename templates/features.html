@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Lunar Analysis Project</title>
+    <title>Moon Features</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
@@ -15,99 +15,76 @@
   </head>
   <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-          <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
-          <div class="md:hidden">
-            <button id="menu-btn" class="focus:outline-none">
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <ul id="menu" class="hidden md:flex space-x-6">
-            <li>
-              <a href="/templates/home.html" class="hover:text-blue-400">Home</a>
-            </li>
-            <li>
-              <a href="/templates/video.html" class="hover:text-blue-400"
-                >Video Generation</a
-              >
-            </li>
-            <li>
-              <a href="/templates/features.html" class="hover:text-blue-400"
-                >Moon Features</a
-              >
-            </li>
-          </ul>
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
+        <div class="md:hidden">
+          <button id="menu-btn" class="focus:outline-none">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
         </div>
-      </nav>
-      <script>
-        document
-          .getElementById("menu-btn")
-          .addEventListener("click", function () {
-            document.getElementById("menu").classList.toggle("hidden");
-          });
-      </script>
+        <ul id="menu" class="hidden md:flex space-x-6">
+          <li>
+            <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
+          </li>
+          <li>
+            <a href="{{ url_for('video_generation') }}" class="hover:text-blue-400">Video Generation</a>
+          </li>
+          <li>
+            <a href="{{ url_for('analyze_moon') }}" class="hover:text-blue-400">Moon Features</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      document
+        .getElementById("menu-btn")
+        .addEventListener("click", function () {
+          document.getElementById("menu").classList.toggle("hidden");
+        });
+    </script>
 
     <div class="container mx-auto px-4 py-8">
       <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-center">
-        Moon Features Analysis
+        Moon Features
       </h1>
+
       <form
-        id="moonAnalysisForm"
+        id="moonFeaturesForm"
         class="form-container"
         enctype="multipart/form-data"
       >
-        <div class="mb-4">
-          <label class="block mb-2 text-lg">Upload Moon Image</label>
-          <input
-            type="file"
-            name="moon_image"
-            accept="image/*"
-            class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors focus:outline-none focus:border-blue-600"
-            required
-          />
+        <div class="space-y-6">
+          <div class="mb-4">
+            <label class="block mb-2 text-lg">Upload Moon Image</label>
+            <input
+              type="file"
+              name="moon_image"
+              class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors"
+            />
+          </div>
+          <div class="text-center">
+            <button
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Analyze Features
+            </button>
+          </div>
         </div>
-        <button
-          type="submit"
-          class="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors"
-        >
-          Analyze Image
-        </button>
       </form>
-      <div id="analysisResults" class="grid-container mt-8">
-        <div class="bg-gray-800 p-4 rounded">
-          <h3 class="font-bold mb-2">Phase Angle</h3>
-          <p id="phaseAngleResult">-</p>
-        </div>
-        <div class="bg-gray-800 p-4 rounded">
-          <h3 class="font-bold mb-2">Sun Angle</h3>
-          <p id="sunAngleResult">-</p>
-        </div>
-        <div class="bg-gray-800 p-4 rounded">
-          <h3 class="font-bold mb-2">Depth Estimation</h3>
-          <p id="depthEstimationResult">-</p>
-        </div>
-        <div class="bg-gray-800 p-4 rounded">
-          <h3 class="font-bold mb-2">Terrain Mapping</h3>
-          <p id="terrainMappingResult">-</p>
-        </div>
-        <div class="bg-gray-800 p-4 rounded col-span-full">
-          <h3 class="font-bold mb-2">Crater Detection</h3>
-          <div id="craterDetectionResult">-</div>
-        </div>
-      </div>
     </div>
 
     <footer class="bg-gray-800 p-4 mt-8 text-center">
