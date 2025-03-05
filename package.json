@@ -1,0 +1,10 @@
+{
+  "name": "lunar-analysis",
+  "version": "1.0.0",
+  "scripts": {
+    "build-css": "tailwindcss -i ./static/css/input.css -o ./static/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
