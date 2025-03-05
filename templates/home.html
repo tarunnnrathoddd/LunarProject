@@ -13,45 +13,9 @@
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
   </head>
   <body class="bg-gray-900 text-white overflow-x-hidden">
-    <!-- <nav class="bg-gray-800 p-4">
-      <div class="container mx-auto">
-        <div class="flex justify-between items-center">
-          <a href="/" class="text-2xl font-bold">Lunar Analysis</a>
-          <button
-            class="mobile-menu md:hidden text-white"
-            onclick="toggleMenu()"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
-          </button>
-          <div class="nav-links md:flex md:space-x-4 md:items-center">
-            <a href="/templates/home.html" class="block hover:text-blue-500"
-              >Home</a
-            >
-            <a href="/templates/video.html" class="block hover:text-blue-500"
-              >Video Generation</a
-            >
-            <a href="/templates/features.html" class="block hover:text-blue-500"
-              >Moon Features</a
-            >
-          </div>
-        </div>
-      </div>
-    </nav> -->
     <nav class="bg-gray-800 p-4">
       <div class="container mx-auto flex justify-between items-center">
         <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
@@ -75,17 +39,13 @@
         </div>
         <ul id="menu" class="hidden md:flex space-x-6">
           <li>
-            <a href="/templates/home.html" class="hover:text-blue-400">Home</a>
+            <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
           </li>
           <li>
-            <a href="/templates/video.html" class="hover:text-blue-400"
-              >Video Generation</a
-            >
+            <a href="{{ url_for('video_generation') }}" class="hover:text-blue-400">Video Generation</a>
           </li>
           <li>
-            <a href="/templates/features.html" class="hover:text-blue-400"
-              >Moon Features</a
-            >
+            <a href="{{ url_for('analyze_moon') }}" class="hover:text-blue-400">Moon Features</a>
           </li>
         </ul>
       </div>
@@ -106,17 +66,8 @@
         <div>Longitude: <span id="longitude">0</span>°</div>
         <div>Latitude: <span id="latitude">0</span>°</div>
       </div>
-      <!-- <div class="controls-info">
-        <h3 class="font-bold mb-2">Controls:</h3>
-        <ul>
-          <li>🖱️ Left Click + Drag: Rotate moon</li>
-          <li>⚲ Scroll: Zoom in/out</li>
-          <li>💫 Auto-rotation enabled</li>
-        </ul>
-      </div> -->
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -131,18 +82,14 @@
       document.querySelector(".relative").appendChild(renderer.domElement);
 
       // Updated moon textures and material settings
-      const geometry = new THREE.SphereGeometry(1.8, 256, 256); // increased segments for better detail
+      const geometry = new THREE.SphereGeometry(1.8, 512, 512); // increased segments for better detail
       const textureLoader = new THREE.TextureLoader();
 
       // Load high-quality moon textures
-      const moonTexture = textureLoader.load("https://i.imgur.com/AxgZYIn.jpg"); // color/albedo map
-      const normalMap = textureLoader.load("https://i.imgur.com/bBNa1zg.jpg"); // normal map
-      const roughnessMap = textureLoader.load(
-        "https://i.imgur.com/RCJFdvz.jpg"
-      ); // roughness map
-      const displacementMap = textureLoader.load(
-        "https://i.imgur.com/N0MZcHp.jpg"
-      ); // displacement map
+      const moonTexture = textureLoader.load("{{ url_for('static', filename='images/image4.png') }}");
+      const normalMap = textureLoader.load("{{ url_for('static', filename='images/normalMap.jpg') }}");
+      const roughnessMap = textureLoader.load("{{ url_for('static', filename='images/roughnessMap.jpg') }}");
+      const displacementMap = textureLoader.load("{{ url_for('static', filename='images/displacementMap.jpg') }}");
 
       // Enhanced material settings
       const moonMaterial = new THREE.MeshStandardMaterial({
@@ -167,49 +114,16 @@
       scene.add(moon);
 
       // Enhanced lighting setup
-      const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+      const ambientLight = new THREE.AmbientLight(0x404040, 2.0); // Increased intensity for better visibility
       scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-      directionalLight.position.set(5, 3, 5);
-      scene.add(directionalLight);
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.5); // Adjusted intensity
+      directionalLight1.position.set(5, 3, 5);
+      scene.add(directionalLight1);
 
-      // Add rim lighting for better crater visibility
-      const backLight = new THREE.PointLight(0x404040, 0.5);
-      backLight.position.set(-5, 0, -5);
-      scene.add(backLight);
-
-      // Add atmosphere glow
-      const atmosphereGeometry = new THREE.SphereGeometry(1.85, 64, 64);
-      const atmosphereMaterial = new THREE.ShaderMaterial({
-        transparent: true,
-        uniforms: {
-          glowColor: { value: new THREE.Color(0x6699ff) },
-          viewVector: { value: camera.position },
-        },
-        vertexShader: `
-                uniform vec3 viewVector;
-                varying float intensity;
-                void main() {
-                    vec3 vNormal = normalize(normalMatrix * normal);
-                    vec3 vNormel = normalize(normalMatrix * viewVector);
-                    intensity = pow(0.63 - dot(vNormal, vNormel), 2.0);
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `,
-        fragmentShader: `
-                uniform vec3 glowColor;
-                varying float intensity;
-                void main() {
-                    vec3 glow = glowColor * intensity;
-                    gl_FragColor = vec4(glow, 0.3);
-                }
-            `,
-      });
-
-      const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-      atmosphere.scale.set(3.1, 3.1, 3.1);
-      scene.add(atmosphere);
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.5); // Additional light for better coverage
+      directionalLight2.position.set(-5, -3, -5);
+      scene.add(directionalLight2);
 
       camera.position.z = 10;
 
@@ -308,10 +222,6 @@
             child.rotation.y += 0.001;
           }
         });
-
-        // Update atmosphere glow
-        atmosphereMaterial.uniforms.viewVector.value =
-          new THREE.Vector3().subVectors(camera.position, atmosphere.position);
 
         updateMoonDetails();
         renderer.render(scene, camera);
