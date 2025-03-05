@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lunar Analysis Project</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
+          <div class="md:hidden">
+            <button id="menu-btn" class="focus:outline-none">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <ul id="menu" class="hidden md:flex space-x-6">
+            <li>
+              <a href="/templates/home.html" class="hover:text-blue-400">Home</a>
+            </li>
+            <li>
+              <a href="/templates/video.html" class="hover:text-blue-400"
+                >Video Generation</a
+              >
+            </li>
+            <li>
+              <a href="/templates/features.html" class="hover:text-blue-400"
+                >Moon Features</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <script>
+        document
+          .getElementById("menu-btn")
+          .addEventListener("click", function () {
+            document.getElementById("menu").classList.toggle("hidden");
+          });
+      </script>
+
+    <main class="flex-grow">{% block content %}{% endblock %}</main>
+
+    <footer class="bg-gray-800 p-6 mt-8 text-center shadow-lg">
+      <p class="text-gray-400">© 2025 Lunar Analysis Project</p>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (
+          !mobileMenu.contains(e.target) &&
+          !mobileMenuButton.contains(e.target)
+        ) {
+          mobileMenu.classList.add("hidden");
+        }
+      });
+
+      // Close mobile menu when window is resized to desktop size
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 768) {
+          // 768px is the md breakpoint
+          mobileMenu.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

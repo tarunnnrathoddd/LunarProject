@@ -1,0 +1,208 @@
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2a6af5;
+  --background: #111827;
+  --surface: #1f2937;
+  --text: #f9fafb;
+}
+
+/* Global responsive styles */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Smooth transitions */
+a,
+button {
+  transition: all 0.3s ease;
+}
+
+/* Form styling */
+input[type="file"] {
+  border: 2px dashed #4b5563;
+  transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: var(--primary);
+}
+
+/* Base styles */
+.container {
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+/* Responsive breakpoints */
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Navigation responsive styles */
+@media (max-width: 640px) {
+  nav .container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  nav .space-x-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+/* Navigation styles */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Mobile menu animation */
+#mobile-menu {
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+}
+
+#mobile-menu.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Active link styles */
+.nav-link.active {
+  color: var(--primary);
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* Mobile menu button hover effect */
+#mobile-menu-button {
+  transition: transform 0.2s ease;
+}
+
+#mobile-menu-button:hover {
+  transform: scale(1.1);
+}
+
+/* Form and input responsive styles */
+.form-container {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media (max-width: 480px) {
+  input[type="file"] {
+    font-size: 0.875rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* Responsive container */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  nav .space-x-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Card grid responsive styles */
+.grid-container {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Card hover effects */
+.bg-gray-800 {
+  transition: transform 0.3s ease;
+}
+
+.bg-gray-800:hover {
+  transform: translateY(-2px);
+}
+
+/* 3D Moon viewer responsive styles */
+.moon-viewer {
+  width: 100%;
+  height: 60vh;
+}
+
+@media (min-width: 768px) {
+  .moon-viewer {
+    height: 80vh;
+  }
+}
+
+/* Loading animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  animation: spin 1s linear infinite;
+}
