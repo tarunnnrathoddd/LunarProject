@@ -40,11 +40,7 @@
             <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
           </li>
           <li>
-            <a
-              href="{{ url_for('video_generation') }}"
-              class="hover:text-blue-400"
-              >Video Generation</a
-            >
+            <a href="{{ url_for('video_generation') }}" class="hover:text-blue-400">Video Generation</a>
           </li>
           <li>
             <a href="{{ url_for('analyze_moon') }}" class="hover:text-blue-400"
@@ -69,69 +65,24 @@
 
       <form
         id="moonFeaturesForm"
-        class="form-container"
+        class="form-container max-w-2xl mx-auto"
         enctype="multipart/form-data"
       >
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="mb-4">
-            <label class="block mb-2 text-lg">Upload Moon Video</label>
-            <input
-              type="file"
-              name="moon_video"
-              accept="video/*"
-              class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors"
-            />
-          </div>
-
-          <div class="mb-4">
-            <label class="block mb-2 text-lg">Depth Estimation Method</label>
-            <select name="depth_method" class="w-full p-3 bg-gray-700 rounded">
-              <option value="stereo">Stereo Analysis</option>
-              <option value="monocular">Monocular Depth</option>
-              <option value="multi-view">Multi-view Reconstruction</option>
-            </select>
-          </div>
-
-          <div class="mb-4">
-            <label class="block mb-2 text-lg"
-              >Terrain Analysis Parameters</label
-            >
-            <div class="space-y-2">
-              <label class="flex items-center">
-                <input type="checkbox" name="slope_analysis" class="mr-2" />
-                Slope Analysis
-              </label>
-              <label class="flex items-center">
-                <input type="checkbox" name="roughness" class="mr-2" />
-                Surface Roughness
-              </label>
-              <label class="flex items-center">
-                <input type="checkbox" name="elevation" class="mr-2" />
-                Elevation Map
-              </label>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label class="block mb-2 text-lg">Sun Phase Angle</label>
-            <input
-              type="range"
-              name="sun_phase"
-              min="0"
-              max="180"
-              class="w-full"
-            />
-            <div class="text-sm text-gray-400 mt-1">
-              <span class="float-left">0°</span>
-              <span class="float-right">180°</span>
-            </div>
-          </div>
+        <div class="mb-6">
+          <label class="block mb-2 text-lg">Upload Moon Video</label>
+          <input
+            type="file"
+            name="moon_video"
+            accept="video/*"
+            class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors"
+            required
+          />
         </div>
 
-        <div class="text-center mt-6">
+        <div class="text-center">
           <button
             type="submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg"
           >
             Analyze Features
           </button>
@@ -139,30 +90,31 @@
       </form>
 
       <!-- Results Section -->
-      <div id="analysisResults" class="mt-8 hidden">
-        <h2 class="text-xl font-bold mb-4">Analysis Results</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-gray-800 p-4 rounded">
-            <h3 class="font-bold mb-2">Depth Map</h3>
-            <div id="depthMapContainer" class="aspect-video bg-gray-700"></div>
-          </div>
-          <div class="bg-gray-800 p-4 rounded">
-            <h3 class="font-bold mb-2">Terrain Analysis</h3>
-            <div id="terrainContainer" class="aspect-video bg-gray-700"></div>
-          </div>
-          <div class="bg-gray-800 p-4 rounded">
-            <h3 class="font-bold mb-2">Crater Detection</h3>
-            <div id="craterContainer" class="aspect-video bg-gray-700"></div>
-          </div>
-          <div class="bg-gray-800 p-4 rounded">
-            <h3 class="font-bold mb-2">Sun Phase Analysis</h3>
-            <div id="sunPhaseContainer" class="aspect-video bg-gray-700"></div>
+      <div id="analysisResults" class="mt-8 hidden max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 gap-6">
+          <div class="bg-gray-800 p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-4" id="resultTitle">
+              Analysis Result
+            </h3>
+            <img
+              id="resultImage"
+              src=""
+              alt="Analysis Result"
+              class="w-full rounded-lg shadow-lg"
+            />
+            <div class="mt-4 space-y-2 text-gray-300">
+              <p id="depthMethod">Depth Estimation Method: <span></span></p>
+              <p id="sunAngle">Sun Angle: <span></span></p>
+              <p id="phaseAngle">Phase Angle: <span></span></p>
+              <p id="terrainAnalysis">Terrain Analysis: <span></span></p>
+              <p id="craterDetection">Crater Detection: <span></span></p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <footer class="bg-gray-800 p-4 mt-8 text-center">
+    <footer class="bg-gray-800 p-4 mt-auto text-center">
       © 2025 Lunar Analysis Project
     </footer>
   </body>

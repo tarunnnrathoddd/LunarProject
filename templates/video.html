@@ -12,49 +12,66 @@
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      #videoPlayer {
+        width: 100%;
+        margin-top: 20px;
+        display: none;
+      }
+      .error {
+        color: red;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body class="bg-gray-900 text-white min-h-screen flex flex-col">
     <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-          <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
-          <div class="md:hidden">
-            <button id="menu-btn" class="focus:outline-none">
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <ul id="menu" class="hidden md:flex space-x-6">
-            <li>
-              <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
-            </li>
-            <li>
-              <a href="{{ url_for('video_generation') }}" class="hover:text-blue-400">Video Generation</a>
-            </li>
-            <li>
-              <a href="{{ url_for('analyze_moon') }}" class="hover:text-blue-400">Moon Features</a>
-            </li>
-          </ul>
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold">Lunar Analysis</a>
+        <div class="md:hidden">
+          <button id="menu-btn" class="focus:outline-none">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
         </div>
-      </nav>
-      <script>
-        document
-          .getElementById("menu-btn")
-          .addEventListener("click", function () {
-            document.getElementById("menu").classList.toggle("hidden");
-          });
-      </script>
+        <ul id="menu" class="hidden md:flex space-x-6">
+          <li>
+            <a href="{{ url_for('home') }}" class="hover:text-blue-400">Home</a>
+          </li>
+          <li>
+            <a
+              href="{{ url_for('video_generation') }}"
+              class="hover:text-blue-400"
+              >Video Generation</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('analyze_moon') }}" class="hover:text-blue-400"
+              >Moon Features</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      document
+        .getElementById("menu-btn")
+        .addEventListener("click", function () {
+          document.getElementById("menu").classList.toggle("hidden");
+        });
+    </script>
 
     <div class="container mx-auto px-4 py-8">
       <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-center">
@@ -62,27 +79,33 @@
       </h1>
 
       <form
-        id="videoGenerationForm"
-        class="form-container"
+        id="uploadForm"
+        class="form-container max-w-2xl mx-auto"
         enctype="multipart/form-data"
+        action="{{ url_for('generate_video') }}"
+        method="POST"
       >
         <div class="space-y-6">
           <div class="mb-4">
             <label class="block mb-2 text-lg">First Image</label>
             <input
               type="file"
+              id="image1"
               name="image1"
               accept="image/*"
               class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors"
+              required
             />
           </div>
           <div class="mb-4">
             <label class="block mb-2 text-lg">Second Image</label>
             <input
               type="file"
+              id="image2"
               name="image2"
               accept="image/*"
               class="w-full p-3 bg-gray-700 rounded border-2 border-dashed border-gray-600 hover:border-blue-500 transition-colors"
+              required
             />
           </div>
           <div class="text-center">
@@ -96,15 +119,88 @@
         </div>
       </form>
 
-      <div id="videoResult" class="mt-8 w-full max-w-3xl mx-auto">
-        <!-- Video will be displayed here -->
+      <!-- Add loading indicator -->
+      <div id="loading" class="hidden mt-6 text-center">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"
+        ></div>
+        <p class="mt-4">Generating video, please wait...</p>
       </div>
+
+      <!-- Add video container -->
+      <div id="videoContainer" class="hidden mt-6">
+        <video id="videoPlayer" controls class="mx-auto max-w-full">
+          Your browser does not support the video tag.
+        </video>
+        <div class="text-center mt-4">
+          <a
+            id="downloadBtn"
+            href="#"
+            download="moon_transition.mp4"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Download Video
+          </a>
+        </div>
+      </div>
+
+      <!-- Error message container -->
+      <div
+        id="errorContainer"
+        class="hidden mt-6 text-red-500 text-center"
+      ></div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/image-video-generator.js') }}"></script>
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
 
-    <footer class="bg-gray-800 p-4 mt-20 text-center">
-      © 2025 Lunar Analysis Project
-    </footer>
+          const formData = new FormData(this);
+          const loading = document.getElementById("loading");
+          const videoContainer = document.getElementById("videoContainer");
+          const videoPlayer = document.getElementById("videoPlayer");
+          const errorContainer = document.getElementById("errorContainer");
+          const downloadBtn = document.getElementById("downloadBtn");
+
+          // Show loading, hide other containers
+          loading.classList.remove("hidden");
+          videoContainer.classList.add("hidden");
+          errorContainer.classList.add("hidden");
+
+          fetch('{{ url_for("generate_video") }}', {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              loading.classList.add("hidden");
+
+              if (data.error) {
+                errorContainer.textContent = data.error;
+                errorContainer.classList.remove("hidden");
+                return;
+              }
+
+              // Show video container
+              videoContainer.classList.remove("hidden");
+
+              // Update video source and download link
+              videoPlayer.src = data.video_url;
+              downloadBtn.href = data.video_url;
+
+              // Show the video player
+              videoPlayer.style.display = "block";
+            })
+            .catch((error) => {
+              loading.classList.add("hidden");
+              errorContainer.textContent =
+                "An error occurred while generating the video.";
+              errorContainer.classList.remove("hidden");
+              console.error("Error:", error);
+            });
+        });
+    </script>
   </body>
 </html>
