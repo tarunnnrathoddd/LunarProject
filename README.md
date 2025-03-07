@@ -1,22 +1,23 @@
 # Lunar Analysis
 
-AI Based Video generation of Lunar Analysis with Flask and OpenCV.
+AI-Based Video Generation for Lunar Surface Analysis
 
 ## Features
 
-- Real-time face detection and recognition
-- Automated attendance tracking
-- User-friendly web interface
-- Secure data storage
-- Export attendance records
+- Deep learning-based lunar surface detection
+- Automated crater and terrain analysis
+- Video generation from lunar data
+- Interactive visualization dashboard
+- Export analysis reports and generated videos
+- Support for multiple data sources (NASA, ISRO, ESA, etc.)
 
 ## Prerequisites
 
 - Python 3.7+
-- Web camera or integrated laptop camera
+- GPU support recommended for faster processing
 - Required Python packages:
   ```bash
-  pip install flask opencv-python numpy werkzeug
+  pip install torch tensorflow opencv-python flask numpy pandas matplotlib
   ```
 
 ## Setup Instructions
@@ -25,7 +26,7 @@ AI Based Video generation of Lunar Analysis with Flask and OpenCV.
 
    ```bash
    git clone https://github.com/tarunnnrathoddd/LunarProject.git
-   cd face-recognition-attendance
+   cd LunarProject
    ```
 
 2. Install dependencies:
@@ -44,20 +45,18 @@ AI Based Video generation of Lunar Analysis with Flask and OpenCV.
 
 ## Usage
 
-1. Register new students/staff by adding their photos
-2. Start the attendance session
-3. The system will automatically detect and mark attendance
-4. View and export attendance records as needed
+1. Upload lunar surface images or data
+2. Select analysis parameters
+3. Generate AI-enhanced videos
+4. View detailed surface analysis
+5. Export results and generated content
 
-## Project Structure
+## Components
 
-```
-├── app.py
-├── templates/
-├── static/
-├── data/
-└── README.md
-```
+- Lunar surface detection model
+- Terrain classification system
+- Video generation pipeline
+- Analysis visualization tools
 
 ## Contributing
 
@@ -73,6 +72,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- OpenCV team
-- Flask community
-- All contributors to this project
+- NASA Open Data Portal
+- PyTorch community
+- TensorFlow team
+- OpenCV contributors
